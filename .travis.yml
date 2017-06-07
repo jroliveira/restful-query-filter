@@ -2,8 +2,11 @@ language: csharp
 mono: none
 dotnet: 1.0.4
 dist: trusty
+branches:
+  only:
+   - master
 install:
  - dotnet restore
 script:
- - dotnet build
+ - dotnet build -c Release
  - dotnet test -c Release test/unit/Http.Query.Filter.Test/Http.Query.Filter.Test.csproj
