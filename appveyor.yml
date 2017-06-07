@@ -40,6 +40,7 @@ before_build:
 
 build_script:
   - dotnet build -c %CONFIGURATION%
+  - dotnet pack -c %CONFIGURATION%
 
 
 #---------------------------------#

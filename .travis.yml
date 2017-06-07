@@ -8,5 +8,5 @@ branches:
 install:
  - dotnet restore
 script:
- - dotnet build
+ - dotnet build -c Release
  - dotnet test -c Release test/unit/Http.Query.Filter.Test/Http.Query.Filter.Test.csproj
