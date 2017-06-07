@@ -3,7 +3,7 @@
 #      general configuration      #
 #---------------------------------#
 
-version: 3.0.{build}
+version: '.{build}'
 
 branches:
   only:
@@ -22,15 +22,18 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
+  nuget_key:
+    secure: NxNpeauRwvVn3Uvt3UPyB2a+n4og2WWv9x4527DbKy3UomugXXZjGfqwr3IE6hVp
+  nuget_url: https://www.nuget.org/api/v2/package
+
 pull_requests:
   do_not_increment_build_number: true
+
 
 
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
-
-platform: Any CPU
 
 configuration:
   - Release
@@ -40,7 +43,8 @@ before_build:
 
 build_script:
   - dotnet build -c %CONFIGURATION%
-  - dotnet pack -c %CONFIGURATION%
+  - dotnet pack src\Http.Query.Filter\Http.Query.Filter.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
+  - dotnet nuget push src\Http.Query.Filter\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
 
 
 #---------------------------------#
@@ -49,16 +53,3 @@ build_script:
 
 test_script:
   - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Test\Http.Query.Filter.Test.csproj
-
-
-#---------------------------------#
-#     deployment configuration    #
-#---------------------------------#
-
-deploy:
-  - provider: NuGet
-    server: https://www.nuget.org/packages/Http.Query.Filter
-    api_key:
-      secure: NxNpeauRwvVn3Uvt3UPyB2a+n4og2WWv9x4527DbKy3UomugXXZjGfqwr3IE6hVp
-    on:
-      branch: master
