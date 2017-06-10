@@ -30,7 +30,6 @@ pull_requests:
   do_not_increment_build_number: true
 
 
-
 #---------------------------------#
 #       build configuration       #
 #---------------------------------#
@@ -43,10 +42,10 @@ before_build:
 
 build_script:
   - dotnet build -c %CONFIGURATION%
+
+after_build:
   - dotnet pack src\Http.Query.Filter\Http.Query.Filter.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
   - dotnet pack src\Http.Query.Filter.Client\Http.Query.Filter.Client.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
-  - dotnet nuget push src\Http.Query.Filter\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
-  - dotnet nuget push src\Http.Query.Filter.Client\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
 
 
 #---------------------------------#
@@ -57,3 +56,7 @@ test_script:
   - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Test\Http.Query.Filter.Test.csproj
   - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Client.Test\Http.Query.Filter.Client.Test.csproj
   - dotnet test -c %CONFIGURATION% test\integration\Http.Query.Filter.Integration.Test\Http.Query.Filter.Integration.Test.csproj
+
+after_test:
+  - dotnet nuget push src\Http.Query.Filter\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
+  - dotnet nuget push src\Http.Query.Filter.Client\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
