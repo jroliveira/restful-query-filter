@@ -10,3 +10,5 @@ install:
 script:
  - dotnet build -c Release
  - dotnet test -c Release test/unit/Http.Query.Filter.Test/Http.Query.Filter.Test.csproj
+ - dotnet test -c Release test/unit/Http.Query.Filter.Client.Test/Http.Query.Filter.Client.Test.csproj
+ - dotnet test -c Release test/integration/Http.Query.Filter.Integration.Test/Http.Query.Filter.Integration.Test.csproj

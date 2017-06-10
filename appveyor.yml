@@ -16,7 +16,7 @@ skip_tags: true
 #    environment configuration    #
 #---------------------------------#
 
-image: Visual Studio 2015
+image: Visual Studio 2017
 
 environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
@@ -44,7 +44,9 @@ before_build:
 build_script:
   - dotnet build -c %CONFIGURATION%
   - dotnet pack src\Http.Query.Filter\Http.Query.Filter.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
+  - dotnet pack src\Http.Query.Filter.Client\Http.Query.Filter.Client.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
   - dotnet nuget push src\Http.Query.Filter\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
+  - dotnet nuget push src\Http.Query.Filter.Client\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
 
 
 #---------------------------------#
@@ -53,3 +55,5 @@ build_script:
 
 test_script:
   - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Test\Http.Query.Filter.Test.csproj
+  - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Client.Test\Http.Query.Filter.Client.Test.csproj
+  - dotnet test -c %CONFIGURATION% test\integration\Http.Query.Filter.Integration.Test\Http.Query.Filter.Integration.Test.csproj
