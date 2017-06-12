@@ -22,10 +22,6 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
-  nuget_key:
-    secure: NxNpeauRwvVn3Uvt3UPyB2a+n4og2WWv9x4527DbKy3UomugXXZjGfqwr3IE6hVp
-  nuget_url: https://www.nuget.org/api/v2/package
-
 pull_requests:
   do_not_increment_build_number: true
 
@@ -57,6 +53,23 @@ test_script:
   - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Client.Test\Http.Query.Filter.Client.Test.csproj
   - dotnet test -c %CONFIGURATION% test\integration\Http.Query.Filter.Integration.Test\Http.Query.Filter.Integration.Test.csproj
 
-after_test:
-  - dotnet nuget push src\Http.Query.Filter\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
-  - dotnet nuget push src\Http.Query.Filter.Client\bin\%CONFIGURATION%\*.nupkg -s %nuget_url% -k %nuget_key%
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+  - path: '**\*.nupkg'
+
+
+#---------------------------------#
+#     deployment configuration    #
+#---------------------------------#
+
+deploy:
+  - provider: NuGet
+    server: https://www.nuget.org/api/v2/package
+    api_key:
+      secure: NxNpeauRwvVn3Uvt3UPyB2a+n4og2WWv9x4527DbKy3UomugXXZjGfqwr3IE6hVp
+    on:
+      branch: master
