@@ -1,14 +1,16 @@
 language: csharp
+sudo: required
+dist: xenial
 mono: none
-dotnet: 2.1.300
-dist: trusty
+dotnet: 2.2
+
 branches:
   only:
-   - master
+    - master
+
 install:
- - dotnet restore
+  - dotnet tool install -g Cake.Tool --version 0.30.0
+  - export PATH=$PATH:$HOME/.dotnet/tools
+
 script:
- - dotnet build -c Release
- - dotnet test -c Release test/unit/Http.Query.Filter.Test/Http.Query.Filter.Test.csproj
- - dotnet test -c Release test/unit/Http.Query.Filter.Client.Test/Http.Query.Filter.Client.Test.csproj
- - dotnet test -c Release test/integration/Http.Query.Filter.Integration.Test/Http.Query.Filter.Integration.Test.csproj
+  - dotnet-cake

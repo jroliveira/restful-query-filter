@@ -1,14 +1,14 @@
-#load "local:?path=tasks/build.cake"
-#load "local:?path=tasks/clean.cake"
-#load "local:?path=tasks/pack.cake"
-#load "local:?path=tasks/restore.cake"
-#load "local:?path=tasks/test.cake"
+#load "local:?path=build/build.cake"
+#load "local:?path=build/clean.cake"
+#load "local:?path=build/pack.cake"
+#load "local:?path=build/restore.cake"
+#load "local:?path=build/test.cake"
 
 var target = Argument("target", "Default");
 var configuration = Argument("configuration", "Release");
 
-var solutionPath = $"./../Http.Query.Filter.sln";
-var artifactsDirectory = Directory($"./../artifacts");
+var solutionPath = "./Http.Query.Filter.sln";
+var artifactsDirectory = Directory($"./artifacts");
 
 Task("Default")
     .IsDependentOn("Restore")

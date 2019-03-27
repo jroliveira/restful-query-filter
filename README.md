@@ -47,12 +47,15 @@ $ git clone https://github.com/jroliveira/http-query-filter.git
 
 # Go into the repository
 $ cd http-query-filter
+
+# Configure .githooks
+$ git config core.hooksPath .githooks
 ```
 
 ### Building
 
 ```bash
-$ dotnet cake ./cakebuild/build.cake
+$ dotnet cake
 ```
 
 or
@@ -68,7 +71,7 @@ $ dotnet build
 ### Deploying / Publishing
 
 ``` bash
-$ dotnet cake ./cakebuild/build.cake --target=Deploy
+$ dotnet cake --target=Deploy
 ```
 
 ## Tests

@@ -33,25 +33,15 @@ pull_requests:
 configuration:
   - Release
 
-before_build:
-  - dotnet restore
+install:
+  - cmd: dotnet tool install -g Cake.Tool --version 0.30.0
 
 build_script:
-  - dotnet build -c %CONFIGURATION%
+  - cmd: dotnet cake
 
 after_build:
   - dotnet pack src\Http.Query.Filter\Http.Query.Filter.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
   - dotnet pack src\Http.Query.Filter.Client\Http.Query.Filter.Client.csproj -c %CONFIGURATION% --version-suffix "%APPVEYOR_BUILD_VERSION%"
-
-
-#---------------------------------#
-#       tests configuration       #
-#---------------------------------#
-
-test_script:
-  - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Test\Http.Query.Filter.Test.csproj
-  - dotnet test -c %CONFIGURATION% test\unit\Http.Query.Filter.Client.Test\Http.Query.Filter.Client.Test.csproj
-  - dotnet test -c %CONFIGURATION% test\integration\Http.Query.Filter.Integration.Test\Http.Query.Filter.Integration.Test.csproj
 
 
 #---------------------------------#
@@ -60,6 +50,7 @@ test_script:
 
 artifacts:
   - path: '**\*.nupkg'
+    name: packages
 
 
 #---------------------------------#
@@ -73,3 +64,4 @@ deploy:
       secure: c+t+t7j+Y2QtAhLm35+YbZB+IFaMN+a77YPT8a/jKz7Y3t7OAk0LBCbIKqJwurRk
     on:
       branch: master
+    artifact: packages
